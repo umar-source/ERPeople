@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ERPeople.DAL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,14 @@ namespace ERPeople.DAL.UnitOfWork
 {
     public interface IUnitOfWork
     {
-        void Commit();
+        IEmployeeRepository EmployeeRepo { get; }
 
+        IAttendanceRepository AttendanceRepo { get; }
+        IShiftHoursRepository ShiftHoursRepo { get; }
+
+        // Add any additional repositories for other entity types here
+
+        void Commit();
         void Rollback();
     }
 }

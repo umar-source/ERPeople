@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ERPeople.DAL.Repositories
 {
-    internal class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly ERPeopleDbContext _dbContext;
         private readonly DbSet<T> _entitiySet;

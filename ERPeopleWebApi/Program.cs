@@ -1,18 +1,32 @@
 using ERPeople.BLL.Services;
 using ERPeople.DAL.Data;
+using ERPeople.DAL.Interfaces;
+using ERPeople.DAL.Repositories;
+using ERPeople.DAL.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddDbContext<ERPeopleDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
+
+builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddTransient<IAttendanceRepository, AttendanceRepository>();
+builder.Services.AddTransient<IShiftHoursRepository, ShiftHoursRepository>();
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 
-builder.Services.AddDbContext<ERPeopleDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
@@ -21,12 +35,6 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 }).AddEntityFrameworkStores<ERPeopleDbContext>()
     .AddDefaultTokenProviders();
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 
 //tell Asp.Net engine how to authenticate and authorize this code
 builder.Services.AddAuthentication(options =>
@@ -50,6 +58,10 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -61,7 +73,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
+app.UseRouting();
+
+app.UseAuthentication(); //Note: Always put UseAuthentication before UseAuthorization
 app.UseAuthorization();
 
 app.MapControllers();

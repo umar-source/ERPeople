@@ -1,51 +1,34 @@
 ﻿using ERPeople.DAL.Data;
-
+using ERPeople.DAL.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ERPeople.DAL.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public readonly ERPeopleDbContext _dbContext;
 
-        public UnitOfWork( ERPeopleDbContext dbContext )
+        private readonly ERPeopleDbContext _dbContext;
+
+        public UnitOfWork(ERPeopleDbContext dbContext, 
+            IEmployeeRepository StudentRepository, 
+            IAttendanceRepository AttendanceRepository,
+             IShiftHoursRepository ShiftHoursRepository
+            )
         {
-            _dbContext = dbContext;
-         
+            this._dbContext = dbContext;
+            this.EmployeeRepo = StudentRepository;
+            this.AttendanceRepo = AttendanceRepository;
+            this.ShiftHoursRepo = ShiftHoursRepository;
         }
 
-
-        /* public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class
-         {
-             // Get the appropriate repository interface based on the entity type
-             if (typeof(TEntity) == typeof(Customer))
-             {
-                 return (IGenericRepository<TEntity>)CustomerRepo;
-             }
-             else if (typeof(TEntity) == typeof(Product))
-             {
-                 return (IGenericRepository<TEntity>)ProductRepo;
-             }
-             if (typeof(TEntity) == typeof(CustomerAddress))
-             {
-                 return (IGenericRepository<TEntity>)CustomerAddressRepo;
-             }
-             else if (typeof(TEntity) == typeof(ProductCategory))
-             {
-                 return (IGenericRepository<TEntity>)ProductCategoryRepo;
-             }
-             if (typeof(TEntity) == typeof(OrderPayment))
-             {
-                 return (IGenericRepository<TEntity>)OrderPaymentRepo;
-             }
-             else if (typeof(TEntity) == typeof(Order))
-             {
-                 return (IGenericRepository<TEntity>)OrderRepo;
-             }
-             // Add other repository interfaces here as needed
-
-             throw new ArgumentException($"No repository found for entity type {typeof(TEntity)}");
-         } */
-
+        // Add private fields for any additional repositories for other entity types here
+        public IEmployeeRepository EmployeeRepo { get; private set; }
+        public IAttendanceRepository AttendanceRepo { get; private set; }
+        public IShiftHoursRepository ShiftHoursRepo { get; private set; }
 
         public void Commit()
         {
@@ -56,6 +39,5 @@ namespace ERPeople.DAL.UnitOfWork
         {
             _dbContext.Dispose();
         }
-
     }
 }

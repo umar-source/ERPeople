@@ -5,9 +5,11 @@ VisualStudioVersion = 17.6.33712.159
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPeopleWebApi", "ERPeopleWebApi\ERPeopleWebApi.csproj", "{193CB00A-AC97-43B3-AB7B-397500E5EB22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERPeople.DAL", "ERPeople.DAL\ERPeople.DAL.csproj", "{633DB006-A6D9-4BD4-8A72-4C66DF63D97D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPeople.DAL", "ERPeople.DAL\ERPeople.DAL.csproj", "{633DB006-A6D9-4BD4-8A72-4C66DF63D97D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERPeople.BLL", "ERPeople.BLL\ERPeople.BLL.csproj", "{F5B3AF89-7D5F-4363-A674-C08B2CDFB4B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPeople.BLL", "ERPeople.BLL\ERPeople.BLL.csproj", "{F5B3AF89-7D5F-4363-A674-C08B2CDFB4B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERPeople.Shared", "ERPeople.Shared\ERPeople.Shared.csproj", "{82881D51-8C7D-43D8-94BE-322D5E54E67E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{F5B3AF89-7D5F-4363-A674-C08B2CDFB4B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5B3AF89-7D5F-4363-A674-C08B2CDFB4B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5B3AF89-7D5F-4363-A674-C08B2CDFB4B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82881D51-8C7D-43D8-94BE-322D5E54E67E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82881D51-8C7D-43D8-94BE-322D5E54E67E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82881D51-8C7D-43D8-94BE-322D5E54E67E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82881D51-8C7D-43D8-94BE-322D5E54E67E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
