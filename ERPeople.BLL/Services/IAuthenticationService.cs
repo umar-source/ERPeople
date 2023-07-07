@@ -1,10 +1,7 @@
-﻿using ERPeople.Shared.Models;
+﻿
+using ERPeople.Shared.Models;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ERPeople.BLL.Services
 {
@@ -14,8 +11,9 @@ namespace ERPeople.BLL.Services
         Task<UserManagerResponse> LoginUser(LoginViewModel login);
         Task<UserManagerResponse> RegisterUser(RegisterViewModel register);
 
-        Task<IdentityUser> GetUserByEmail(string email);
+        Task Logout();
 
+        Task<IdentityUser> GetUserByEmail(string email);
 
     }
 }

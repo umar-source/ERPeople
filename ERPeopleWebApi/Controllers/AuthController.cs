@@ -2,6 +2,7 @@
 using ERPeople.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 namespace ERPeopleWebApi.Controllers
@@ -12,17 +13,21 @@ namespace ERPeopleWebApi.Controllers
     {
         private readonly IAuthenticationService _authService;
 
-        public AuthController(IAuthenticationService authService)
+        private readonly ILogger<AuthController> _logger;
+
+        public AuthController(IAuthenticationService authService, ILogger<AuthController> logger)
         {
             _authService = authService;
+            _logger = logger;
         }
 
         [AllowAnonymous]
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel loginUser)
         {
-            if (ModelState.IsValid)
-            {
+
+            if (ModelState.IsValid) {
+
                 var result = await _authService.RegisterUser(loginUser);
 
                 if (result.IsSuccess)
@@ -33,28 +38,36 @@ namespace ERPeopleWebApi.Controllers
                 return BadRequest(result);
             }
 
-            return BadRequest("Some properties are not valid"); 
+            return BadRequest("Invalid properties");
+
         }
 
         [AllowAnonymous]
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel login)
         {
-            if (ModelState.IsValid)
-            {
+        
                 var result = await _authService.LoginUser(login);  
 
                 if (result.IsSuccess)
                 {
                     var tokenString = _authService.GenerateTokenString(login);
+                    return Ok(tokenString);                 
+                }          
+                return BadRequest("Some properties are not valid");
+        }
 
-                    return Ok(tokenString);
-                }
 
-                return BadRequest(result);
-            }
-           
-                return BadRequest("Some properties are not valid");    
+        [Authorize]
+        [HttpPost("Logout")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _authService.Logout();
+        
+            return Ok();
+         
+           // return OK(); // or you can return NoContent() if you prefer
         }
 
 

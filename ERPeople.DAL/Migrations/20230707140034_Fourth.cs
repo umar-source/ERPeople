@@ -5,7 +5,7 @@
 namespace ERPeople.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Four : Migration
+    public partial class Fourth : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

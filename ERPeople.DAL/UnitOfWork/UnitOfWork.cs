@@ -17,7 +17,7 @@ namespace ERPeople.DAL.UnitOfWork
             IEmployeeRepository StudentRepository, 
             IAttendanceRepository AttendanceRepository,
              IShiftHoursRepository ShiftHoursRepository
-            )
+        )
         {
             this._dbContext = dbContext;
             this.EmployeeRepo = StudentRepository;

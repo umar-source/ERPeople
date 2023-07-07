@@ -1,6 +1,8 @@
 ﻿using ERPeople.Shared.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,19 +14,20 @@ namespace ERPeople.BLL.Services
     {
         private readonly UserManager<IdentityUser> _userManager;
 
-        private readonly SignInManager<IdentityUser> _signInManager;
-
         private readonly IConfiguration _config;
 
-        public AuthenticationService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,IConfiguration config)
+        private readonly SignInManager<IdentityUser> _signInManager;
+
+        private readonly ILogger<AuthenticationService> _logger;
+
+        public AuthenticationService(UserManager<IdentityUser> userManager, IConfiguration config,ILogger<AuthenticationService> logger, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _config = config;
+            _logger = logger;
+            _signInManager = signInManager;
         }
-
-
-
+       
         public async Task<UserManagerResponse> RegisterUser(RegisterViewModel loginUser)
         {
             var identityUser = new IdentityUser
@@ -40,6 +43,7 @@ namespace ERPeople.BLL.Services
             //It means if user created successfully it will return true otherwise it will be false.
             if (result.Succeeded)
             {
+                _logger.LogInformation("User created a new account with password.");
                 return new UserManagerResponse
                 {
                     Message = "User created successfully!",
@@ -59,22 +63,40 @@ namespace ERPeople.BLL.Services
         public async Task<UserManagerResponse> LoginUser(LoginViewModel login)
         {
             var identityUser = await _userManager.FindByEmailAsync(login.Email);
-            if (identityUser is null)
+
+            if (identityUser == null)
             {
                 return new UserManagerResponse
                 {
                     Message = "There is no user with that Email address",
                     IsSuccess = false,
                 };
+
             }
 
-            var result = await _userManager.CheckPasswordAsync(identityUser, login.Password);
+            var result = await _signInManager.CheckPasswordSignInAsync(identityUser,
+                         login.Password, lockoutOnFailure: true);
 
-            if (!result)
+            //  var result = await _userManager.CheckPasswordAsync(identityUser, login.Password);
+
+
+            if (result.Succeeded)
             {
+                _logger.LogInformation("User logged in.");
                 return new UserManagerResponse
                 {
-                    Message = "Invalid password",
+                    Message = "Login successfully!",
+                    IsSuccess = true,
+                };
+
+            }
+
+            if (result.IsLockedOut)
+            {
+                _logger.LogWarning("User account locked out.");
+                return new UserManagerResponse
+                {
+                    Message = "User account locked out.",
                     IsSuccess = false,
                 };
 
@@ -82,13 +104,10 @@ namespace ERPeople.BLL.Services
 
             return new UserManagerResponse
             {
-                Message = "Login successfully!",
-                IsSuccess = true,        
+                Message = "Invalid password",
+                IsSuccess = false,
             };
-        }
-
-
-
+        }  
 
         public string GenerateTokenString(LoginViewModel login)
         {
@@ -104,7 +123,7 @@ namespace ERPeople.BLL.Services
 
             var securityToken = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddSeconds(60),
+                expires: DateTime.Now.AddMinutes(60),
                 issuer: _config.GetSection("Jwt:Issuer").Value,
                 audience: _config.GetSection("Jwt:Audience").Value,
                 signingCredentials: signingCred);
@@ -115,7 +134,15 @@ namespace ERPeople.BLL.Services
 
         public async Task<IdentityUser> GetUserByEmail(string email)
         {
+
             return await _userManager.FindByEmailAsync(email);
+        }
+
+        public async Task Logout()
+        {
+         
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
         }
     }
 }

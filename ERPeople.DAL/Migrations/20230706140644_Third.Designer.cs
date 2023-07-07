@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERPeople.DAL.Migrations
 {
     [DbContext(typeof(ERPeopleDbContext))]
-    [Migration("20230627225228_Six")]
-    partial class Six
+    [Migration("20230706140644_Third")]
+    partial class Third
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
