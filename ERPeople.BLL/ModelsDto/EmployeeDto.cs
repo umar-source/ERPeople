@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPeople.Shared.Models
+namespace ERPeople.BLL.ModelsDto
 {
-    public class Employee
+    public class EmployeeDto
     {
-        public int EmployeeId { get; set; }
-
-
         public string? FirstName { get; set; }
 
         public string? LastName { get; set; }

@@ -39,6 +39,8 @@ builder.Services.AddTransient<IEmployeeService, EmployeeService>();
 
 // Inject Global Exception Handling
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+// Auto Mapper
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -2,7 +2,6 @@
 using ERPeople.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 namespace ERPeopleWebApi.Controllers
@@ -13,12 +12,9 @@ namespace ERPeopleWebApi.Controllers
     {
         private readonly IAuthenticationService _authService;
 
-        private readonly ILogger<AuthController> _logger;
-
         public AuthController(IAuthenticationService authService, ILogger<AuthController> logger)
         {
             _authService = authService;
-            _logger = logger;
         }
 
         [AllowAnonymous]
@@ -26,7 +22,8 @@ namespace ERPeopleWebApi.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterViewModel loginUser)
         {
 
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
 
                 var result = await _authService.RegisterUser(loginUser);
 
@@ -46,15 +43,15 @@ namespace ERPeopleWebApi.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel login)
         {
-        
-                var result = await _authService.LoginUser(login);  
 
-                if (result.IsSuccess)
-                {
-                    var tokenString = _authService.GenerateTokenString(login);
-                    return Ok(tokenString);                 
-                }          
-                return BadRequest("Some properties are not valid");
+            var result = await _authService.LoginUser(login);
+
+            if (result.IsSuccess)
+            {
+                var tokenString = _authService.GenerateTokenString(login);
+                return Ok(tokenString);
+            }
+            return BadRequest("Some properties are not valid");
         }
 
 
@@ -64,10 +61,10 @@ namespace ERPeopleWebApi.Controllers
         public async Task<IActionResult> Logout()
         {
             await _authService.Logout();
-        
+
             return Ok();
-         
-           // return OK(); // or you can return NoContent() if you prefer
+
+            // return OK(); // or you can return NoContent() if you prefer
         }
 
 

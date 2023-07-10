@@ -1,6 +1,6 @@
 ﻿using ERPeople.DAL.Data;
 using ERPeople.DAL.Interfaces;
-using ERPeople.Shared.Models;
+using ERPeople.DAL.Models;
 
 namespace ERPeople.DAL.Repositories
 {

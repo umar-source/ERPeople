@@ -1,13 +1,14 @@
-﻿using ERPeople.Shared.Models;
+﻿
+using ERPeople.BLL.ModelsDto;
 
 namespace ERPeople.BLL.Services
 {
     public interface IEmployeeService
     {
-        void CreateEmployee(Employee employee);
+        void CreateEmployee(EmployeeDto employeeDto);
         void DeleteEmployee(int id);
-        IEnumerable<Employee> GetAllEmployees();
-        Employee GetEmployeeById(int id);
-        void UpdateEmployee(Employee employee);
+        IEnumerable<EmployeeDto> GetAllEmployees();
+        EmployeeDto GetEmployeeById(int id);
+        void UpdateEmployee(EmployeeDto employeeDto);
     }
 }

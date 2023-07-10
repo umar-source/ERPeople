@@ -1,5 +1,5 @@
-﻿using ERPeople.DAL.Repositories;
-using ERPeople.Shared.Models;
+﻿using ERPeople.DAL.Models;
+using ERPeople.DAL.Repositories;
 
 
 namespace ERPeople.DAL.Interfaces

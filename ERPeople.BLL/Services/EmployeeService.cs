@@ -1,5 +1,8 @@
 ﻿
 
+using AutoMapper;
+using ERPeople.BLL.ModelsDto;
+using ERPeople.DAL.Models;
 using ERPeople.DAL.UnitOfWork;
 using ERPeople.Shared.Models;
 
@@ -8,31 +11,37 @@ namespace ERPeople.BLL.Services
     public class EmployeeService : IEmployeeService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public EmployeeService(IUnitOfWork unitOfWork)
+        public EmployeeService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
 
-        public IEnumerable<Employee> GetAllEmployees()
+        public IEnumerable<EmployeeDto> GetAllEmployees()
         {
-            return _unitOfWork.EmployeeRepo.GetAll();
+            var employees = _unitOfWork.EmployeeRepo.GetAll();
+            return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
         }
 
-        public Employee GetEmployeeById(int id)
+        public EmployeeDto GetEmployeeById(int id)
         {
-            return _unitOfWork.EmployeeRepo.GetById(id);
+            var employee = _unitOfWork.EmployeeRepo.GetById(id);
+            return _mapper.Map<EmployeeDto>(employee);
         }
 
-        public void CreateEmployee(Employee employee)
+        public void CreateEmployee(EmployeeDto employeeDto)
         {
+            var employee = _mapper.Map<Employee>(employeeDto);
             _unitOfWork.EmployeeRepo.Add(employee);
             _unitOfWork.Commit();
         }
 
-        public void UpdateEmployee(Employee employee)
+        public void UpdateEmployee(EmployeeDto employeeDto)
         {
+            var employee = _mapper.Map<Employee>(employeeDto);
             _unitOfWork.EmployeeRepo.Update(employee);
             _unitOfWork.Commit();
         }

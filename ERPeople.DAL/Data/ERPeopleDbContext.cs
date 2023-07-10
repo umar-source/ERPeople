@@ -1,4 +1,6 @@
 ﻿
+
+using ERPeople.DAL.Models;
 using ERPeople.Shared.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
