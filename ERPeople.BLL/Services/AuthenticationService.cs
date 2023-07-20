@@ -109,7 +109,7 @@ namespace ERPeople.BLL.Services
             };
         }  
 
-        public string GenerateTokenString(LoginViewModel login)
+        public IDictionary<string, object> GenerateToken(LoginViewModel login)
         {
             var claims = new List<Claim>
             {
@@ -129,8 +129,15 @@ namespace ERPeople.BLL.Services
                 signingCredentials: signingCred);
 
             string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
-            return tokenString;
+
+            return new Dictionary<string, object>
+                 {
+                        { "token", tokenString },
+                        { "expiration", securityToken.ValidTo }
+                 };
+
         }
+
 
         public async Task<IdentityUser> GetUserByEmail(string email)
         {
@@ -138,9 +145,9 @@ namespace ERPeople.BLL.Services
             return await _userManager.FindByEmailAsync(email);
         }
 
+
         public async Task Logout()
-        {
-         
+        {        
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
         }

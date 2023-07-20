@@ -35,7 +35,15 @@ builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddTransient<IEmployeeService, EmployeeService>();
 
-
+// Configure the Referrer Policy in your .NET 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin();
+        });
+});
 
 // Inject Global Exception Handling
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
@@ -116,6 +124,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseCors("AllowAllOrigins");
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 

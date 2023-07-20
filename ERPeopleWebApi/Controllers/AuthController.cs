@@ -2,6 +2,7 @@
 using ERPeople.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace ERPeopleWebApi.Controllers
@@ -43,13 +44,12 @@ namespace ERPeopleWebApi.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel login)
         {
-
             var result = await _authService.LoginUser(login);
 
             if (result.IsSuccess)
             {
-                var tokenString = _authService.GenerateTokenString(login);
-                return Ok(tokenString);
+                var token = _authService.GenerateToken(login);
+                return Ok(token);
             }
             return BadRequest("Some properties are not valid");
         }

@@ -7,7 +7,7 @@ namespace ERPeople.BLL.Services
 {
     public interface IAuthenticationService
     {
-        string GenerateTokenString(LoginViewModel login);
+        IDictionary<string, object> GenerateToken(LoginViewModel login);
         Task<UserManagerResponse> LoginUser(LoginViewModel login);
         Task<UserManagerResponse> RegisterUser(RegisterViewModel register);
 
