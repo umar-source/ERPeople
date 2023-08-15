@@ -8,26 +8,27 @@ namespace ERPeopleWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeesController : ControllerBase
+    public class DepartmentController : ControllerBase
     {
-        private readonly ILogger<EmployeesController> _logger;
-        private readonly IEmployeeService _employeeService;
 
-        public EmployeesController(IEmployeeService employeeService, ILogger<EmployeesController> logger)
+        private readonly ILogger<DepartmentController> _logger;
+
+        private readonly IDepartmentService _departmentService;
+
+        public DepartmentController(IDepartmentService departmentService, ILogger<DepartmentController> logger)
         {
-            _employeeService = employeeService;
+            _departmentService = departmentService;
             _logger = logger;
         }
 
 
-
         [HttpGet]
-        public ActionResult<IEnumerable<EmployeeDto>> Get()
+        public ActionResult<IEnumerable<DepartmentDto>> Get()
         {
             try
             {
-                var employees = _employeeService.GetAllEmployees();
-                return Ok(employees);
+                var departments =  _departmentService.GetAllDepartment();
+                return  Ok(departments);
 
             }
             catch (DomainNotFoundException ex)
@@ -37,7 +38,7 @@ namespace ERPeopleWebApi.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Something went wrong inside the GetAllEmployees action");
+                _logger.LogError(e, "Something went wrong inside the GetAllDepartment action");
                 return StatusCode(500, $"Internal server error: {e}");
             }
 
@@ -54,14 +55,14 @@ namespace ERPeopleWebApi.Controllers
                     throw new ArgumentOutOfRangeException(nameof(id));
                 }
 
-                
-                var emp = _employeeService.GetEmployeeById(id);
-                if (emp == null)
+                var dep = _departmentService.GetDepartmentById(id);
+
+                if (dep == null)
                 {
-                    return NotFound();
+                    NotFound();
                 }
 
-                return Ok(emp);
+                return Ok(dep);
 
             }
             catch (DomainNotFoundException ex)
@@ -71,7 +72,7 @@ namespace ERPeopleWebApi.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Something went wrong inside the GetByIdEmployee action");
+                _logger.LogError(e, "Something went wrong inside the GetDepartmentById action");
                 return StatusCode(500, $"Internal server error: {e}");
             }
 
@@ -79,63 +80,62 @@ namespace ERPeopleWebApi.Controllers
 
 
         [HttpPost]
-        public ActionResult Create([FromBody] EmployeeDto employee)
+        public ActionResult Create([FromBody] DepartmentDto departmentDto)
         {
             try
             {
-                
-                if (employee == null)
+                if (departmentDto == null)
                 {
 
-                    throw new ArgumentNullException(nameof(employee));
+                    throw new ArgumentNullException(nameof(departmentDto));
                 }
 
-                _employeeService.CreateEmployee(employee);
+
+                _departmentService.CreateDepartment(departmentDto);
                 return Ok();
 
             }
             catch (DomainBadRequestException ex)
             {
-                _logger.LogError(ex, "DomainBadRequestException occurred");
+                _logger.LogError(ex, "DomainBadRequestException occurred.");
                 throw;
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Something went wrong inside the CreateEmployee action");
-                return StatusCode(500, $"Internal server error: {e}");
+                _logger.LogError(e, "Something went wrong inside the CreateDepartment   action");
+                return StatusCode(500, $"Internal server error {e}");
             }
         }
 
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id,[FromBody] EmployeeDto employeeDto)
+        public IActionResult Update(int id,[FromBody] DepartmentDto departmentDto)
         {
             try
             {
-                if (id <= 0)
-                {
+                if (id <= 0) {
                     throw new ArgumentOutOfRangeException(nameof(id));
                 }
 
-                if (employeeDto == null)
-                {
+                if (departmentDto == null) {
 
-                    throw new ArgumentNullException(nameof(employeeDto));
+                    throw new ArgumentNullException(nameof(departmentDto));
                 }
 
-                employeeDto.EmployeeId = id;
-                _employeeService.UpdateEmployee(employeeDto);
+                departmentDto.DepartmentId = id;
+                _departmentService.UpdateDepartment(departmentDto);
                 return Ok();
             }
             catch (DomainNotFoundException ex)
             {
                 _logger.LogError(ex, "DomainNotFoundException occurred");
+                // return NotFound(ex.Message);
                 throw;
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Something went wrong inside the GetEmployeeById action");
-                return StatusCode(500, $"Internal server error: {e}");
+                _logger.LogError(e, "Something went wrong inside the UpdateDepartment action");
+                return StatusCode(500, $"Internal server error {e}");
             }
         }
 
@@ -144,13 +144,7 @@ namespace ERPeopleWebApi.Controllers
         {
             try
             {
-
-                if (id <= 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(id));
-                }
-
-                _employeeService.DeleteEmployee(id);
+                _departmentService.DeleteDepartment(id);
                 return NoContent();
             }
             catch (DomainNotFoundException ex)
@@ -160,10 +154,9 @@ namespace ERPeopleWebApi.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Something went wrong inside the DeleteEmployee  action");
+                _logger.LogError(e, "Something went wrong inside the DeleteDepartment  action");
                 return StatusCode(500, $"Internal server error: {e}");
             }
-
         }
     }
 }

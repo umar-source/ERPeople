@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ERPeople.BLL.Services
 {
-    public interface IAuthenticationService
+    public interface IAuthService
     {
         IDictionary<string, object> GenerateToken(LoginViewModel login);
         Task<UserManagerResponse> LoginUser(LoginViewModel login);

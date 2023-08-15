@@ -1,4 +1,5 @@
-﻿using ERPeople.Shared.Models;
+﻿using ERPeople.DAL.Models;
+using ERPeople.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,10 @@ namespace ERPeople.DAL.Interfaces
 {
     public interface IAttendanceRepository : IGenericRepository<Attendance>
     {
-      
+        public IEnumerable<Attendance> GetAttendancesByEmployeeId(int employeeId);
+
+        public IEnumerable<Attendance> GetAttendancesByEmployeeIdAndDateRange(int employeeId, DateTime startDate, DateTime endDate);
 
     }
 }
+

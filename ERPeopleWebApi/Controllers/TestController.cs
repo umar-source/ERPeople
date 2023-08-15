@@ -12,7 +12,7 @@ namespace ERPeopleWebApi.Controllers
     [BindProperties(SupportsGet = true)]
     public class TestController : ControllerBase
     {
-        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
+       
         [HttpGet("Hello")]
         public IActionResult Hello()
         {

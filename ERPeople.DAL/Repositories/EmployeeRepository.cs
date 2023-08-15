@@ -4,7 +4,7 @@ using ERPeople.DAL.Models;
 
 namespace ERPeople.DAL.Repositories
 {
-    public class EmployeeRepository : GenericRepository<Employee> , IEmployeeRepository
+    public class EmployeeRepository : GenericRepository<Employee>, IEmployeeRepository
     {
         public EmployeeRepository(ERPeopleDbContext dbContext) : base(dbContext)
         {

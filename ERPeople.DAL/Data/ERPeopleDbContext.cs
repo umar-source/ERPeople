@@ -16,8 +16,9 @@ namespace ERPeople.DAL.Data
         }
 
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<Attendance> Attendence { get; set; }
-        public DbSet<ShiftHours> ShiftHours { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Attendance> Attendences { get; set; }
+        public DbSet<LeaveRequest> LeaveRequests { get; set; }
 
 
         //protected override void OnModelCreating(ModelBuilder builder)

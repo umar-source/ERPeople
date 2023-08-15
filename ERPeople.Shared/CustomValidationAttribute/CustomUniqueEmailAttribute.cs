@@ -11,8 +11,7 @@ namespace ERPeople.Shared.CustomValidationAttribute
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
 
-         /*
-          
+         /*         
             if (value is string email && new EmailAddressAttribute().IsValid(email))
             {
                 // Get the database context

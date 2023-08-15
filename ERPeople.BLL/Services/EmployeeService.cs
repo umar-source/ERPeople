@@ -1,10 +1,9 @@
-﻿
-
-using AutoMapper;
+﻿using AutoMapper;
+using ERPeople.BLL.Exceptions;
 using ERPeople.BLL.ModelsDto;
 using ERPeople.DAL.Models;
 using ERPeople.DAL.UnitOfWork;
-using ERPeople.Shared.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ERPeople.BLL.Services
 {
@@ -41,10 +40,26 @@ namespace ERPeople.BLL.Services
 
         public void UpdateEmployee(EmployeeDto employeeDto)
         {
-            var employee = _mapper.Map<Employee>(employeeDto);
-            _unitOfWork.EmployeeRepo.Update(employee);
+
+            var existingEmployee = _unitOfWork.EmployeeRepo.GetById(employeeDto.EmployeeId);
+            if (existingEmployee == null)
+            {
+              
+                throw new Exception("Employee Not Found");
+            }
+
+            // Update entity properties from DTO...
+            existingEmployee.FirstName = employeeDto.FirstName;
+            existingEmployee.LastName = employeeDto.LastName;
+            existingEmployee.Email = employeeDto.Email;
+            existingEmployee.DateOfBirth = employeeDto.DateOfBirth;
+            existingEmployee.PhoneNumber = employeeDto.PhoneNumber;
+
+            _unitOfWork.EmployeeRepo.Update(existingEmployee);
             _unitOfWork.Commit();
         }
+
+      
 
         public void DeleteEmployee(int id)
         {
@@ -55,7 +70,5 @@ namespace ERPeople.BLL.Services
                 _unitOfWork.Commit();
             }
         }
-
- 
     }
 }

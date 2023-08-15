@@ -41,11 +41,6 @@ namespace ERPeople.DAL.Repositories
             return item;
         }
 
-        public T GetByID(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Update(T item)
         {
             _entitiySet.Update(item);

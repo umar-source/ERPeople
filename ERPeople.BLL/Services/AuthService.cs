@@ -10,7 +10,7 @@ using System.Text;
 
 namespace ERPeople.BLL.Services
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AuthService : IAuthService
     {
         private readonly UserManager<IdentityUser> _userManager;
 
@@ -18,9 +18,10 @@ namespace ERPeople.BLL.Services
 
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        private readonly ILogger<AuthenticationService> _logger;
+        private readonly ILogger<AuthService> _logger;
 
-        public AuthenticationService(UserManager<IdentityUser> userManager, IConfiguration config,ILogger<AuthenticationService> logger, SignInManager<IdentityUser> signInManager)
+
+        public AuthService(UserManager<IdentityUser> userManager, IConfiguration config,ILogger<AuthService> logger, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _config = config;
@@ -91,6 +92,7 @@ namespace ERPeople.BLL.Services
 
             }
 
+
             if (result.IsLockedOut)
             {
                 _logger.LogWarning("User account locked out.");
@@ -109,6 +111,8 @@ namespace ERPeople.BLL.Services
             };
         }  
 
+
+
         public IDictionary<string, object> GenerateToken(LoginViewModel login)
         {
             var claims = new List<Claim>
@@ -123,7 +127,7 @@ namespace ERPeople.BLL.Services
 
             var securityToken = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(60),
+                expires: DateTime.Now.AddMinutes(1),
                 issuer: _config.GetSection("Jwt:Issuer").Value,
                 audience: _config.GetSection("Jwt:Audience").Value,
                 signingCredentials: signingCred);
@@ -141,15 +145,18 @@ namespace ERPeople.BLL.Services
 
         public async Task<IdentityUser> GetUserByEmail(string email)
         {
-
             return await _userManager.FindByEmailAsync(email);
         }
 
 
         public async Task Logout()
-        {        
+        {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
         }
+
+     
+
+        
     }
 }

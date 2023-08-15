@@ -1,9 +1,4 @@
 ﻿using ERPeople.DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ERPeople.DAL.UnitOfWork
 {
@@ -11,8 +6,11 @@ namespace ERPeople.DAL.UnitOfWork
     {
         IEmployeeRepository EmployeeRepo { get; }
 
+        IDepartmentRepository DepartmentRepo { get; }
+
         IAttendanceRepository AttendanceRepo { get; }
-        IShiftHoursRepository ShiftHoursRepo { get; }
+
+        ILeaveRequestRepository LeaveRequestRepo { get; }
 
         // Add any additional repositories for other entity types here
 
