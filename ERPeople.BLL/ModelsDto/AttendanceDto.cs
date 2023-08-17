@@ -9,13 +9,12 @@ namespace ERPeople.BLL.ModelsDto
 {
     public class AttendanceDto
     {
+
         public int AttendanceId { get; set; }
 
         public DateTime? CheckInTime { get; set; } = null;
 
         public DateTime? CheckOutTime { get; set; } = null;
-
-
 
         [Required]
         public int EmployeeId { get; set; }

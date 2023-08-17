@@ -31,18 +31,18 @@ namespace ERPeopleWebApi
             services.AddDbContext<ERPeopleDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnectionString")));
 
             // Inject Repo
-            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
-            services.AddTransient<IDepartmentRepository, DepartmentRepository>();
-            services.AddTransient<IAttendanceRepository, AttendanceRepository>();
-            services.AddTransient<ILeaveRequestRepository, LeaveRequestRepository>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+            services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Inject Services
-            services.AddTransient<IAuthService, AuthService>();
-            services.AddTransient<IEmployeeService, EmployeeService>();
-            services.AddTransient<IDepartmentService, DepartmentService>();
-            services.AddTransient<IAttendanceService, AttendanceService>();
-            services.AddTransient<ILeaveRequestService, LeaveRequestService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddScoped<IAttendanceService, AttendanceService>();
+            services.AddScoped<ILeaveRequestService, LeaveRequestService>();
 
             // Configure the Referrer Policy in your .NET 
             services.AddCors(options =>
